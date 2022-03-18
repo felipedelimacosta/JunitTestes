@@ -35,4 +35,9 @@ public class PessoaController {
     public Pessoa findByName(@RequestBody Pessoa pessoa){
         return pessoaService.getPessoaByNome(pessoa);
     }
+
+    @GetMapping("/getById")
+    public Pessoa findById(@RequestBody Pessoa pessoa){
+        return pessoaService.getPessoaByNome(pessoa);
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.junittestes.service;
 
 import com.example.junittestes.dto.PessoaDTO;
+import com.example.junittestes.exception.BadRequestException;
 import com.example.junittestes.mapper.PessoaMapper;
 import com.example.junittestes.model.Pessoa;
 import com.example.junittestes.repository.PessoaRepository;
@@ -16,6 +17,8 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @Log4j2
@@ -41,6 +44,9 @@ public class PessoaServiceTest {
 
         BDDMockito.when(pessoaMapper.pessoaDtoToPessoa(ArgumentMatchers.any(PessoaDTO.class)))
                 .thenReturn(PessoaCreate.createPessoa());
+
+        BDDMockito.when(pessoaRepository.findById(ArgumentMatchers.anyLong()))
+                .thenReturn(Optional.of(PessoaCreate.createPessoa()));
     }
 
     @Test
@@ -76,5 +82,17 @@ public class PessoaServiceTest {
         Assertions.assertThat(pessoaByNome.getId())
                 .isNotNull()
                 .isEqualTo(expectId);
+    }
+
+
+    @Test
+    @DisplayName("Get ById Throw BadRequestExcaption Return Pessoa When Not Found")
+    void getByIdThrowBadRequestExcaption_ReturnPessoa_WhenNotFound(){
+
+        BDDMockito.when(pessoaRepository.findById(ArgumentMatchers.anyLong()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThatExceptionOfType(BadRequestException.class)
+                .isThrownBy(() -> pessoaService.getPessoaById(PessoaCreate.createPessoaNotFound()));
     }
 }

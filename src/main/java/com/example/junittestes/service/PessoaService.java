@@ -1,6 +1,7 @@
 package com.example.junittestes.service;
 
 import com.example.junittestes.dto.PessoaDTO;
+import com.example.junittestes.exception.BadRequestException;
 import com.example.junittestes.mapper.PessoaMapper;
 import com.example.junittestes.model.Pessoa;
 import com.example.junittestes.repository.PessoaRepository;
@@ -33,5 +34,12 @@ public class PessoaService {
     public Pessoa getPessoaByNome(Pessoa pessoa){
 
         return pessoaRepository.findByNome(pessoa.getNome());
+    }
+
+
+    public Pessoa getPessoaById(Pessoa pessoa){
+
+        return pessoaRepository.findById(pessoa.getId())
+                .orElseThrow(() -> new BadRequestException("Pessoa not foud"));
     }
 }

@@ -11,6 +11,10 @@ public class PessoaCreate {
         return Pessoa.builder().id(1L).idade(24).nome("Felipe").sobreNome("de Lima").build();
     }
 
+    public static Pessoa createPessoaNotFound(){
+
+        return Pessoa.builder().id(12L).idade(24).nome("Felipe").sobreNome("de Lima").build();
+    }
 
     public static PessoaDTO createPessoaDTO(){
 
